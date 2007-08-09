@@ -110,7 +110,7 @@ void parse_args(int argc,char **argv)
 				if((strcmp(optarg,"x11"))==0) vo_mode=VO_X11;
 				break;
 			case 'l':
-				b_log=1;
+				b_log=1;log_mode=1;
 				break;
 			case 'e':
 				b_multi_win=0;

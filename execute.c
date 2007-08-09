@@ -19,7 +19,7 @@ void get_I_field(struct unpacked_op_mem *IR,int addr_mode,int val, int IP,int ID
 {
 	int RPA,PIP;
 	struct unpacked_op_mem TMP;
-	if(addr_mode==op_IMM) {RPA=0;}
+	if(addr_mode==op_IMM) {RPA=IP;*RRPA=RPA;unpack(RPA,IR);}
 	else
 	{
 		RPA=(IP+val)%size_arena;
@@ -107,7 +107,7 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		switch(code->mod)
 		{
 		case op_A:
-			IRB.b_val=IRA.a_val;
+			IRB.a_val=IRA.a_val;
 			IRB.processID=pt->ptask->ID;
 			pack2mem(RPB,&IRB);
 			break;
@@ -146,6 +146,10 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 			break;
 		}
 		(pt->IP++)%size_arena;
+		if(vo_mode>=VO_FRAMEBUFFER)
+		{
+			cell_refresh(RPB,pt);
+		}
 		break;
 	case op_ADD:
 		IRB.processID=pt->ptask->ID;

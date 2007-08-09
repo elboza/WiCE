@@ -12,13 +12,14 @@
 #define COMM_PROC 1
 #define COMM_THREAD 2
 
-#define MAX_CPU_CICLE 1000
+#define MAX_CPU_CICLE 10000
 
 #define MEM_TYPE_ONE 1
 #define MEM_TYPE_TWO 2
 #define MEM_TYPE_FOUR 4
 
 #define MAXSTR 255
+#define MAXMOD 6
 #define MAX_PROG_SIZE 200
 #define MAXPROCESSES 1000
 #define MINDISTANCE 200
@@ -113,7 +114,7 @@ void *arena;
 int size_arena,warriors,version,min_distance,maxprocesses,max_prog_size;
 int arena_mem_type;
 int output_mode,vo_mode,log_mode,b_log,max_x,max_y,sc_x,sc_y;
-int xd,yd,xl,yl,max_sc_y,sleeptime,b_multi_win,gtkwaittime;
+int xd,yd,xl,yl,max_sc_y,sleeptime,b_multi_win,gtkwaittime,current_make_node;
 int gtk_sc_x,gtk_sc_y;
 int communication;
 int CPU_cicle;

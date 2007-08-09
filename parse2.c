@@ -16,9 +16,10 @@ unsigned int solve_vt(char *name,struct Process *proc)
 	struct var_table *vt;
 	for(vt=proc->pc->vt_first;vt;vt=vt->next)
 	{
-		if((strcmp(name,vt->name))==0)
+		if(((strcmp(name,vt->name))==0) || ((strcmp(name,vt->name+1))==0))
 		{
 			val=solve_expr(vt->val_first,proc);
+			if(vt->name[0]==':'){val=val-current_make_node;}  // adjust for labels
 			return val;
 		}
 	}
@@ -137,6 +138,7 @@ void generate_code(struct Process *proc)
 		op_mem.a_pref=str_to_code(in->laddr);
 		op_mem.b_pref=str_to_code(in->raddr);
 		if((strcmp(in->modifier,"NULL"))==0) {get_default_mod(&op_mem);} else {op_mem.mod=str_to_code(in->modifier);}
+		current_make_node=in->num_node;
 		if(in->left) {op_mem.a_val=solve_expr(in->left,proc);} else {op_mem.a_val=0;}
 		if(in->right) {op_mem.b_val=solve_expr(in->right,proc);} else {op_mem.b_val=0;}
 
@@ -147,10 +149,10 @@ void generate_code(struct Process *proc)
 		if(new_code==NULL)
 		{sprintf(s1,"at line %d ",in->line_count);die("error malloking new_code struct");}
 		//jump adjust
-		if((op_mem.opcode==op_JMP)||(op_mem.opcode==op_JMZ)||(op_mem.opcode==op_JMN)||(op_mem.opcode==op_DJN))
-		{
-			op_mem.a_val=(op_mem.a_val-in->num_node)%size_arena;
-		}
+		//if((op_mem.opcode==op_JMP)||(op_mem.opcode==op_JMZ)||(op_mem.opcode==op_JMN)||(op_mem.opcode==op_DJN))
+		//{
+		//	op_mem.a_val=(op_mem.a_val-in->num_node)%size_arena;
+		//}
 		//pack
 		pack(&op_mem,new_code);
 		//add code_node
@@ -159,6 +161,7 @@ void generate_code(struct Process *proc)
 	//solve_org
 	if((strcmp(proc->pc->org,""))!=0)
 	{
+		current_make_node=0;
 		x=solve_vt(proc->pc->org,proc);
 		sprintf(proc->pc->org,"%d",x);
 	}

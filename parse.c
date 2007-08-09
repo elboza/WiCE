@@ -222,11 +222,12 @@ char* get_b_arg(struct expr_node **expr,char *p,int line_count)
 	}
 	return p;
 }
-void insert_label(char *label,int label_val,int line_num,struct Process *proc)
+void insert_label(char *label2,int label_val,int line_num,struct Process *proc)
 {
 	struct var_table *vt,*new_vt;
 	struct expr_node *expr;
-	char s1[MAXSTR];
+	char s1[MAXSTR],label[MAXSTR];
+	sprintf(label,":%s",label2);
 	for(vt=proc->pc->vt_first;vt;vt=vt->next)
 	if((strcmp(vt->name,label))==0)
 	{
@@ -379,7 +380,7 @@ void read_file(char *filename,struct Process **pproc)
 			strcpy(new_instr->modifier,"NULL");
 			if(*p=='.'){
 				p=get_word(++p);is_modifier(my_token,line_count);
-				strncpy(new_instr->modifier,my_token,MAXSTR);
+				strncpy(new_instr->modifier,my_token,MAXMOD);
 			}
 			p=skip_space(p);
 			if(n_args>0)

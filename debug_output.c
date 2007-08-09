@@ -62,7 +62,7 @@ void print_ex_data(struct unpacked_op_mem *code,struct unpacked_op_mem *IRA,stru
 	{
 		get_str(code,&m_op[0],&m_apref[0],&m_bpref[0],&m_mod[0]);
 		sprintf(out_str,"code:{proc=%d| %s %s %d,%s %d |IP=%d}                                                                ",code->processID,m_op,m_apref,code->a_val,m_bpref,code->b_val,pt->IP);
-		if(vo_mode==VO_NONE && log_mode)	fputs(out_str,fpout);
+		if((vo_mode==VO_NONE) && (log_mode))	fputs(out_str,fpout);
 		if(vo_mode==VO_FRAMEBUFFER) mvaddstr(sc_y+1+yd,0,out_str);
 	}
 	if(vo_mode==VO_FRAMEBUFFER)
