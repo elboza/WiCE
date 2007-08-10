@@ -32,6 +32,7 @@ void init_txt()
 	int count,curs_x,curs_y,col;
 	char car;
 	struct unpacked_op_mem mem;
+	struct process_task *ptask;
 	xd=1;		/*x offset from beginnig of screen*/
 	yd=1;		/*y offest from beginning of screen*/
 	xl=25;		/*x space from end of screen*/
@@ -42,6 +43,7 @@ void init_txt()
 	sc_x=COLS-xd-xl;
 	max_sc_y=LINES-yd-yl;
 	sc_y=(int)ceil((double)size_arena/(double)sc_x);
+	txt_y_warrior_list=sc_x+4;
 	if(output_mode>=OUTPUT_DEBUG)
 	{
 		sprintf(out_str,"sc_x=%d sc_y=%d COLS=%d ROWS=%d(max %d)\n",sc_x,sc_y,COLS,LINES,max_sc_y);
@@ -75,10 +77,19 @@ void init_txt()
 		mvaddch(count+yd,0,'|');
 		mvaddch(count+yd,sc_x+1,'|');
 	}
+	//print warriors list
+	for(ptask=primo_task;ptask=ptask;ptask=ptask->next)
+	{
+		
+		sprintf(out_str,"V #%d (%c)",ptask->ID,ptask->out_symbol);
+		mvaddstr(ptask->ID,txt_y_warrior_list,out_str);
+	}
+	//
 	refresh();
 }
 void deinit_txt()
 {
+	move(sc_y+3+yd,0);
 	printw("leaving...");
 	sprintf(out_str,"...and the winner is process #%d (%c)                            \n",primo_task->ID,primo_task->out_symbol);
 	printw(out_str);

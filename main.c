@@ -43,7 +43,7 @@ void get_defaults_arg()
 	b_log=0;
 	sleeptime=0;
 	b_multi_win=1;
-	gtkwaittime=50;
+	gtkwaittime=30;
 	gtk_sc_x=200;
 	gtk_sc_y=200;
 }

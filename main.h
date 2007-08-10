@@ -114,7 +114,7 @@ void *arena;
 int size_arena,warriors,version,min_distance,maxprocesses,max_prog_size;
 int arena_mem_type;
 int output_mode,vo_mode,log_mode,b_log,max_x,max_y,sc_x,sc_y;
-int xd,yd,xl,yl,max_sc_y,sleeptime,b_multi_win,gtkwaittime,current_make_node;
+int xd,yd,xl,yl,max_sc_y,sleeptime,b_multi_win,gtkwaittime,current_make_node,txt_y_warrior_list;
 int gtk_sc_x,gtk_sc_y;
 int communication;
 int CPU_cicle;

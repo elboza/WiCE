@@ -95,7 +95,7 @@ void init_game()
 	for(proc=proc_primo;proc;proc=proc->next)
 	{
 		//calc offset in mem
-		proc_offs=next_offs+(rand()%min_distance);
+		proc_offs=(next_offs+(rand()%min_distance))%size_arena;
 		//put in mem
 		pos=proc_offs;
 		for(in=proc->pc->first;in;in=in->next)

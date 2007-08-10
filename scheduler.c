@@ -65,7 +65,6 @@ void play_game()
 		ptask=ptask->next; if(ptask==NULL) ptask=primo_task;
 		if(task_to_kill->cur_thread==NULL)
 		{
-			del_task(task_to_kill);
 			if(output_mode>=OUTPUT_DEBUG)
 			{
 				sprintf(out_str,"process killed.                                               \n");
@@ -74,9 +73,11 @@ void play_game()
 			}
 			if(vo_mode==VO_FRAMEBUFFER)
 			{
+				mvaddch(task_to_kill->ID,txt_y_warrior_list,'X');
 				sprintf(out_str,"process killed.                                               \n");
 				mvaddstr(sc_y+2+yd,0,out_str);
 			}
+			del_task(task_to_kill);
 		}
 	}
 }

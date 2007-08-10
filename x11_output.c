@@ -221,6 +221,10 @@ gint gtk_execute(gpointer data)
 			sprintf(out_str,"the task #%d is dead",task_to_kill->ID);
   			gtk_list_store_set(GTK_LIST_STORE(model), &iter,0, out_str,-1);
   		}
+  		if(gtkwarrior)
+  		{
+  			
+  		}
 		del_task(task_to_kill);
 	}
 	return TRUE;
