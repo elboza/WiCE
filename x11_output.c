@@ -138,13 +138,12 @@ static gint main_configure (GtkWidget *widget, GdkEventConfigure *event)
   main_map = widget->window;
   execute_gc = gdk_gc_new (drawing_area->window);
   execute_colormap = gdk_window_get_colormap (drawing_area->window);
-  black.red = 65535;
-  black.green = 0;
-  black.blue = 0;
+  black.red = 15000;
+  black.green = 15000;
+  black.blue = 15000;
   gdk_color_alloc (execute_colormap, &black);      
   gdk_gc_set_background (execute_gc, &black);
-	
-	
+
   return FALSE;
 }
 void x11_cell_refresh(int addr,struct process_thread *pt)
