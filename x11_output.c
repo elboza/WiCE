@@ -98,6 +98,9 @@ static void color_icon (GdkPixbuf *pixbuf, int x, int y, guchar red, guchar gree
 static void on_destroy (GtkWidget * widget, gpointer data)
 {
     gtk_main_quit ();
+    sprintf(out_str,"User Termination.\n");
+    fputs(out_str,fpout);
+    exit(1);
 }
 static void on_history_destroy (GtkWidget * widget, gpointer data)
 {
@@ -150,7 +153,7 @@ void x11_cell_refresh(int addr,struct process_thread *pt)
 {
 	int x,y;
 	x=(addr%gtk_sc_x)*6;
-	y=(addr/gtk_sc_x)*6;
+	y=(int)(((double)addr/(double)gtk_sc_x))*6;
 	if(pt==NULL)
 	{
 		gdk_gc_set_foreground(execute_gc,&black);

@@ -91,7 +91,14 @@ void deinit_txt()
 {
 	move(sc_y+3+yd,0);
 	printw("leaving...");
-	sprintf(out_str,"...and the winner is process #%d (%c)                            \n",primo_task->ID,primo_task->out_symbol);
+	if(g_actual_CPU>=CPU_cicle)
+	{
+		sprintf(out_str,"The match is a Draw!!");
+	}
+	else
+	{
+		sprintf(out_str,"...and the winner is process #%d (%c)  , at %d CPU cicles                          \n",primo_task->ID,primo_task->out_symbol,g_actual_CPU);
+	}
 	printw(out_str);
 	getch();
 	endwin();

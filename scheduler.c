@@ -80,4 +80,5 @@ void play_game()
 			del_task(task_to_kill);
 		}
 	}
+	g_actual_CPU=actual_CPU;
 }

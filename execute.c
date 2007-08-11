@@ -82,6 +82,8 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 {
 	int alive,RPA,RPB;
 	struct unpacked_op_mem IRA,IRB;
+	struct process_task *ptask;
+	struct process_thread *new_thread;
 	alive=ALIVE;
 	code->processID=pt->ptask->ID;
 	get_I_field(&IRA,code->a_pref,code->a_val,pt->IP,code->processID,&RPA);
@@ -145,7 +147,7 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		default:
 			break;
 		}
-		(pt->IP++)%size_arena;
+		pt->IP=(pt->IP+1)%size_arena;
 		if(vo_mode>=VO_FRAMEBUFFER)
 		{
 			cell_refresh(RPB,pt);
@@ -180,7 +182,11 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 			break;
 		}
 		pack2mem(RPB,&IRB);
-		(pt->IP++)%size_arena;
+		pt->IP=(pt->IP+1)%size_arena;
+		if(vo_mode>=VO_FRAMEBUFFER)
+		{
+			cell_refresh(RPB,pt);
+		}
 		break;
 	case op_SUB:
 		IRB.processID=pt->ptask->ID;
@@ -211,7 +217,11 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 			break;
 		}
 		pack2mem(RPB,&IRB);
-		(pt->IP++)%size_arena;
+		pt->IP=(pt->IP+1)%size_arena;
+		if(vo_mode>=VO_FRAMEBUFFER)
+		{
+			cell_refresh(RPB,pt);
+		}
 		break;
 	case op_MUL:
 		IRB.processID=pt->ptask->ID;
@@ -242,7 +252,11 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 			break;
 		}
 		pack2mem(RPB,&IRB);
-		(pt->IP++)%size_arena;
+		pt->IP=(pt->IP+1)%size_arena;
+		if(vo_mode>=VO_FRAMEBUFFER)
+		{
+			cell_refresh(RPB,pt);
+		}
 		break;
 	case op_DIV:
 		IRB.processID=pt->ptask->ID;
@@ -283,7 +297,11 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 			break;
 		}
 		pack2mem(RPB,&IRB);
-		(pt->IP++)%size_arena;
+		pt->IP=(pt->IP+1)%size_arena;
+		if(vo_mode>=VO_FRAMEBUFFER)
+		{
+			cell_refresh(RPB,pt);
+		}
 		break;
 	case op_MOD:
 		IRB.processID=pt->ptask->ID;
@@ -324,7 +342,11 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 			break;
 		}
 		pack2mem(RPB,&IRB);
-		(pt->IP++)%size_arena;
+		pt->IP=(pt->IP+1)%size_arena;
+		if(vo_mode>=VO_FRAMEBUFFER)
+		{
+			cell_refresh(RPB,pt);
+		}
 		break;
 	case op_JMP:
 		pt->IP=RPA;
@@ -485,10 +507,22 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		break;
 	case op_SPL:
 		//create new thread
-		
-		// and resume to next instruction
-		(pt->IP++)%size_arena;
-		//set new process to go after the first (repeat the father first)
+		ptask=pt->ptask;
+		if(ptask->n_threads<maxprocesses)
+		{
+			new_thread=(struct process_thread*)malloc(sizeof(struct process_thread));
+			if(new_thread==NULL) die("error creating the new thread");
+			new_thread->ptask=ptask;
+			new_thread->prev=NULL;
+			new_thread->next=NULL;
+			new_thread->communication_in=0;
+			new_thread->communication_out=0;
+			new_thread->IP=RPA;
+			// and resume to next instruction
+			pt->IP=(pt->IP+1)%size_arena;
+			//set new process to go last in process task's queue (repeat the father first)
+			add_thread(new_thread,ptask);
+		}
 		break;
 	default:
 		break;

@@ -157,7 +157,14 @@ void deinit_game()
 {
 	if(vo_mode==VO_FRAMEBUFFER) deinit_txt();
 	if(vo_mode==VO_X11) deinit_x11();
-	sprintf(out_str,"...and the winner is process #%d                               \n",primo_task->ID);
-	if(output_mode>=OUTPUT_DEBUG2) sprintf(out_str,"...and the winner is process #%d (%c)                            \n",primo_task->ID,primo_task->out_symbol);
+	if(g_actual_CPU>=CPU_cicle)
+	{
+		sprintf(out_str,"The match is a Draw !!\n");
+	}
+	else
+	{
+		sprintf(out_str,"...and the winner is process #%d        ,at %d CPU cicles                       \n",primo_task->ID,g_actual_CPU);
+		if(output_mode>=OUTPUT_DEBUG2) sprintf(out_str,"...and the winner is process #%d (%c)                       , at %d CPU cicles     \n",primo_task->ID,primo_task->out_symbol,g_actual_CPU);
+	}
 	fputs(out_str,fpout);
 }
