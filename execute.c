@@ -100,7 +100,7 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 	switch(code->opcode)
 	{
 	case op_NOP:
-		(pt->IP++)%size_arena;
+		pt->IP=(pt->IP+1)%size_arena;
 		break;
 	case op_DAT:
 		alive=DEAD;
@@ -356,17 +356,17 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		{
 		case op_A:
 		case op_BA:
-			if(IRB.a_val==0) {pt->IP=RPA;} else {(pt->IP++)%size_arena;}
+			if(IRB.a_val==0) {pt->IP=RPA;} else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_B:
 		case op_AB:
-			if(IRB.b_val==0) {pt->IP=RPA;} else {(pt->IP++)%size_arena;}
+			if(IRB.b_val==0) {pt->IP=RPA;} else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_F:
 		case op_X:
 		case op_I:
 			if((IRB.a_val==0)&&(IRB.b_val==0))
-			{ pt->IP=RPA;} else {(pt->IP++)%size_arena;}
+			{ pt->IP=RPA;} else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		default:
 			break;
@@ -377,11 +377,11 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		{
 		case op_A:
 		case op_BA:
-			if(IRB.a_val!=0) {pt->IP=RPA;} else {(pt->IP++)%size_arena;}
+			if(IRB.a_val!=0) {pt->IP=RPA;} else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_B:
 		case op_AB:
-			if(IRB.b_val!=0) {pt->IP=RPA;} else {(pt->IP++)%size_arena;}
+			if(IRB.b_val!=0) {pt->IP=RPA;} else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_F:
 		case op_X:
@@ -400,12 +400,12 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		case op_A:
 		case op_BA:
 			(IRB.a_val--)%size_arena;
-			if(IRB.a_val!=0) {pt->IP=RPA;}else{(pt->IP++)%size_arena;}
+			if(IRB.a_val!=0) {pt->IP=RPA;}else{pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_B:
 		case op_AB:
 			(IRB.b_val--)%size_arena;
-			if(IRB.b_val!=0) {pt->IP=RPA;}else{(pt->IP++)%size_arena;}
+			if(IRB.b_val!=0) {pt->IP=RPA;}else{pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_F:
 		case op_I:
@@ -425,33 +425,33 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		{
 		case op_A:
 			if(IRA.a_val==IRB.a_val)
-			{(pt->IP+=2)%size_arena;}
-			else{(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else{pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_B:
 			if(IRA.a_val==IRB.a_val)
-			{(pt->IP+=2)%size_arena;}
-			else{(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else{pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_AB:
 			if(IRA.a_val==IRB.b_val)
-			{(pt->IP+=2)%size_arena;}
-			else{(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else{pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_BA:
 			if(IRA.b_val==IRB.a_val)
-			{(pt->IP+=2)%size_arena;}
-			else{(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else{pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_F:
 			if((IRA.a_val==IRB.a_val)&&(IRA.b_val==IRB.b_val))
-			{(pt->IP+=2)%size_arena;}
-			else{(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else{pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_X:
 			if((IRA.a_val==IRB.b_val)&&(IRA.b_val==IRB.a_val))
-			{(pt->IP+=2)%size_arena;}
-			else{(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else{pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_I:
 			if((IRA.opcode==IRB.opcode)&&
@@ -460,8 +460,8 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 			(IRA.a_val==IRB.a_val)&&
 			(IRA.b_pref==IRB.b_pref)&&
 			(IRA.b_val==IRB.b_val))
-			{(pt->IP+=2)%size_arena;}
-			else{(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else{pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		default:
 			break;
@@ -472,34 +472,34 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		{
 		case op_A:
 			if(IRA.a_val<IRB.a_val)
-			{(pt->IP+=2)%size_arena;}
-			else {(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_B:
 			if(IRA.b_val<IRB.b_val)
-			{(pt->IP+=2)%size_arena;}
-			else {(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_AB:
 			if(IRA.a_val<IRB.b_val)
-			{(pt->IP+=2)%size_arena;}
-			else {(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_BA:
 			if(IRA.b_val<IRB.a_val)
-			{(pt->IP+=2)%size_arena;}
-			else {(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_F:
 		case op_I:
 			if((IRA.a_val<IRB.a_val)&&(IRA.b_val<IRB.b_val))
-			{(pt->IP+=2)%size_arena;}
-			else {(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		case op_X:
 			if((IRA.a_val<IRB.b_val)&&(IRA.b_val<IRB.a_val))
-			{(pt->IP+=2)%size_arena;}
-			else {(pt->IP++)%size_arena;}
+			{pt->IP=(pt->IP+2)%size_arena;}
+			else {pt->IP=(pt->IP+1)%size_arena;}
 			break;
 		default:
 			break;
@@ -522,6 +522,8 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 			pt->IP=(pt->IP+1)%size_arena;
 			//set new process to go last in process task's queue (repeat the father first)
 			add_thread(new_thread,ptask);
+			ptask->cur_thread=ptask->cur_thread->prev;
+			if(ptask->cur_thread==NULL) ptask->cur_thread=ptask->ultimo_thread;
 		}
 		break;
 	default:
