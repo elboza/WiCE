@@ -515,15 +515,139 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 			new_thread->ptask=ptask;
 			new_thread->prev=NULL;
 			new_thread->next=NULL;
-			new_thread->communication_in=0;
-			new_thread->communication_out=0;
+			new_thread->communication_in_a=0;
+			new_thread->communication_out_a=0;
+			new_thread->communication_in_b=0;
+			new_thread->communication_out_b=0;
 			new_thread->IP=RPA;
 			// and resume to next instruction
 			pt->IP=(pt->IP+1)%size_arena;
 			//set new process to go last in process task's queue (repeat the father first)
-			add_thread(new_thread,ptask);
+			add_thread_rev(new_thread,ptask);
 			ptask->cur_thread=ptask->cur_thread->prev;
 			if(ptask->cur_thread==NULL) ptask->cur_thread=ptask->ultimo_thread;
+		}
+		break;
+	case op_CTOUT:
+		switch(code->mod)
+		{
+		case op_A:
+			pt->communication_out_a=IRA.a_val;
+			pt->communication_out_b=IRB.a_val;
+			break;
+		case op_B:
+			pt->communication_out_a=IRA.b_val;
+			pt->communication_out_b=IRB.b_val;
+			break;
+		case op_AB:
+		case op_F:
+		case op_I:
+			pt->communication_out_a=IRA.a_val;
+			pt->communication_out_b=IRB.b_val;
+			break;
+		case op_BA:
+		case op_X:
+			pt->communication_out_a=IRA.b_val;
+			pt->communication_out_b=IRB.a_val;
+			break;
+		
+		default:
+			break;
+		}
+		pt->IP=(pt->IP+1)%size_arena;
+		break;
+	case op_CTIN:
+		switch(code->mod)
+		{
+		case op_A:
+			IRA.a_val=pt->communication_out_a;
+			IRB.a_val=pt->communication_out_b;
+			break;
+		case op_B:
+			IRA.b_val=pt->communication_out_a;
+			IRB.b_val=pt->communication_out_b;
+			break;
+		case op_AB:
+		case op_F:
+		case op_I:
+			IRA.a_val=pt->communication_out_a;
+			IRB.b_val=pt->communication_out_b;
+			break;
+		case op_BA:
+		case op_X:
+			IRA.b_val=pt->communication_out_a;
+			IRB.a_val=pt->communication_out_b;
+			break;
+		
+		default:
+			break;
+		}
+		pt->IP=(pt->IP+1)%size_arena;
+		if(vo_mode>=VO_FRAMEBUFFER)
+		{
+			cell_refresh(RPB,pt);
+			cell_refresh(RPA,pt);
+		}
+		break;
+	case op_CPOUT:
+		switch(code->mod)
+		{
+		case op_A:
+			pt->ptask->communication_out_a=IRA.a_val;
+			pt->ptask->communication_out_b=IRB.a_val;
+			break;
+		case op_B:
+			pt->ptask->communication_out_a=IRA.b_val;
+			pt->ptask->communication_out_b=IRB.b_val;
+			break;
+		case op_AB:
+		case op_F:
+		case op_I:
+			pt->ptask->communication_out_a=IRA.a_val;
+			pt->ptask->communication_out_b=IRB.b_val;
+			break;
+		case op_BA:
+		case op_X:
+			pt->ptask->communication_out_a=IRA.b_val;
+			pt->ptask->communication_out_b=IRB.a_val;
+			break;
+		
+		default:
+			break;
+		}
+		pt->IP=(pt->IP+1)%size_arena;
+		break;
+	case op_CPIN:
+		switch(code->mod)
+		{
+		case op_A:
+			IRA.a_val=pt->ptask->communication_out_a;
+			IRB.a_val=pt->ptask->communication_out_b;
+			break;
+		case op_B:
+			IRA.b_val=pt->ptask->communication_out_a;
+			IRB.b_val=pt->ptask->communication_out_b;
+			break;
+		case op_AB:
+		case op_F:
+		case op_I:
+			IRA.a_val=pt->ptask->communication_out_a;
+			IRB.b_val=pt->ptask->communication_out_b;
+			break;
+		case op_BA:
+		case op_X:
+			IRA.b_val=pt->ptask->communication_out_a;
+			IRB.a_val=pt->ptask->communication_out_b;
+			break;
+		
+		default:
+			break;
+		}
+		pt->IP=(pt->IP+1)%size_arena;
+		if(vo_mode>=VO_FRAMEBUFFER)
+		{
+			cell_refresh(RPB,pt);
+			cell_refresh(RPA,pt);
 		}
 		break;
 	default:

@@ -72,7 +72,7 @@ struct process_task{
 	unsigned int ID;
 	unsigned int n_threads;
 	struct process_thread *cur_thread,*primo_thread,*ultimo_thread;
-	int communication_in,communication_out;
+	int communication_in_a,communication_in_b,communication_out_a,communication_out_b;
 	char out_symbol;
 	int out_color;
 	GdkColor m_color;
@@ -81,7 +81,7 @@ struct process_task{
 struct process_thread{
 	unsigned int IP;
 	struct process_task *ptask;
-	int communication_in,communication_out;
+	int communication_in_a,communication_in_b,communication_out_a,communication_out_b;
 	struct process_thread *prev,*next;
 };
 struct var_table{

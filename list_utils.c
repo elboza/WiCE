@@ -67,6 +67,22 @@ void add_thread(struct process_thread *thread,struct process_task *task)
 	thread->next=NULL;
 	task->ultimo_thread=thread;
 }
+void add_thread_rev(struct process_thread *thread,struct process_task *task)
+{
+	thread->ptask=task;
+	if(task->primo_thread==NULL)
+	{
+		task->primo_thread=thread;
+		task->ultimo_thread=thread;
+		thread->prev=NULL;
+		thread->next=NULL;
+		return;
+	}
+	task->primo_thread->prev=thread;
+	thread->prev=NULL;
+	thread->next=task->primo_thread;
+	task->primo_thread=thread;
+}
 void add_task(struct process_task *task)
 {
 	if(primo_task==NULL)

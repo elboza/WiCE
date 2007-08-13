@@ -17,6 +17,10 @@
 #define op_SLT 16
 #define op_LDP 17
 #define op_STP 18
+#define op_CTIN 19
+#define op_CTOUT 20
+#define op_CPIN 21
+#define op_CPOUT 22
 #define op_IMM 0
 // #
 #define op_DIR 2

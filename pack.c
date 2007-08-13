@@ -15,7 +15,7 @@ int str_to_code(char *str)
 	static char *conv_table[]={
 	"nop","1","dat","0","mov","2","add","3","sub","4","mul","5","div","6","mod","7","jmp","8",
 	"jmz","9","jmn","10","djn","11","spl","12","cmp","13","seq","14","sne","15","slt","16","ldp","17",
-	"stp","18"
+	"stp","18","ctin","19","ctout","20","cpin","21","cpout","22"
 	,"#","0","$","2","*","3","@","4","{","5","<","6","}","7",">","1"
 	,"a","0","b","1","ab","2","ba","3","f","4","x","5","i","6"
 	,"NULL","-1"
@@ -69,6 +69,12 @@ void get_default_mod(struct unpacked_op_mem *op)
 		case op_DJN:
 		case op_SPL:
 			op->mod=op_B;
+			break;
+		case op_CTIN:
+		case op_CTOUT:
+		case op_CPIN:
+		case op_CPOUT:
+			op->mod=op_F;
 			break;
 		default:
 			break;

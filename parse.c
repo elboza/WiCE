@@ -76,7 +76,7 @@ int is_instr(char *token,int line_count)
 	static char *valid_instr[]={
 	"mov","2","dat","2","nop","0","add","2","sub","2","mul","2","div","2","mod","2","jmp","1",
 	"jmz","1","jmn","1","djn","1","spl","1","cmp","2","seq","2","sne","2","slt","2","ldp","2",
-	"stp","2"
+	"stp","2","ctin","2","ctout","2","cpin","2","cpout","2"
 	,"NULL","0"
 	};
 	int n;

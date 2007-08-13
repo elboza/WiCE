@@ -8,3 +8,4 @@ void del_task(struct process_task *task);
 void addr2coords(int addr,int *x,int *y);
 void get_p_attr(int ID,char *car,int *col);
 void add_killed_task(struct process_task *task);
+void add_thread_rev(struct process_thread *thread,struct process_task *task);

@@ -106,8 +106,10 @@ void init_game()
 		pthread=(struct process_thread*)malloc(sizeof(struct process_thread));
 		if(pthread==NULL) die("error alloking new thread");
 		pthread->IP=proc_offs+(atoi(proc->pc->org));
-		pthread->communication_in=0;
-		pthread->communication_out=0;
+		pthread->communication_in_a=0;
+		pthread->communication_out_a=0;
+		pthread->communication_in_b=0;
+		pthread->communication_out_b=0;
 		pthread->prev=NULL;
 		pthread->next=NULL;
 		pthread->ptask=NULL;
@@ -120,8 +122,10 @@ void init_game()
 		ptask->primo_thread=NULL;
 		ptask->ultimo_thread=NULL;
 		ptask->cur_thread=pthread;
-		ptask->communication_in=0;
-		ptask->communication_out=0;
+		ptask->communication_in_a=0;
+		ptask->communication_out_a=0;
+		ptask->communication_in_b=0;
+		ptask->communication_out_b=0;
 		get_symbols(&ptask->out_symbol,&ptask->out_color);
 		//add pt
 		add_thread(pthread,ptask);
