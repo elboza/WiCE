@@ -431,6 +431,7 @@ void init_x11()
   			gdk_draw_rectangle (bullet, execute_gc, TRUE, 0, 0,10,10);
   			gdk_pixbuf_get_from_drawable(pixbuf,bullet,NULL,0,0,0,0,10,10);
   			gtk_list_store_set(GTK_LIST_STORE(model2), &iter,0, pixbuf,1,out_str,-1);
+  			g_object_unref(bullet);
   			ptask=ptask->next;
   		}while(ptask);
   	}
