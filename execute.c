@@ -554,6 +554,7 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		default:
 			break;
 		}
+		ctout(pt);
 		pt->IP=(pt->IP+1)%size_arena;
 		break;
 	case op_CTIN:
@@ -615,6 +616,7 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		default:
 			break;
 		}
+		cpout(pt->ptask);
 		pt->IP=(pt->IP+1)%size_arena;
 		break;
 	case op_CPIN:

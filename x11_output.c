@@ -39,6 +39,7 @@ GdkGC* execute_gc;
 GdkColor black;
 GdkColormap *execute_colormap;	
 GdkPixbuf *pixbuf;
+GdkPixmap *bullet;
 
 struct process_task* get_cell_owner(int addr)
 {
@@ -94,6 +95,21 @@ static void color_icon (GdkPixbuf *pixbuf, int x, int y, guchar red, guchar gree
   p[1] = green;
   p[2] = blue;
   p[3] = alpha;
+  gdk_pixbuf_fill(pixbuf,(guint32)p);
+}
+static guint32 get_RGBA(guchar red, guchar green, guchar blue)
+{
+	guchar *p,*pixels;
+	int x=0,y=0,n_channels,rowstride;
+	n_channels = gdk_pixbuf_get_n_channels (pixbuf);
+	rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  	pixels = gdk_pixbuf_get_pixels (pixbuf);
+  	p = pixels + y * rowstride + x * n_channels;
+  	p[0] = red;
+  	p[1] = green;
+  	p[2] = blue;
+  	p[3] = 1;
+	return *p;
 }
 static void on_destroy (GtkWidget * widget, gpointer data)
 {
@@ -377,6 +393,7 @@ void init_x11()
 {
 	GtkWidget *label;
 	struct process_task *ptask;
+	guint32 m_RGBA;
 	gtk_init(NULL,NULL);
 	gtkhistory=1;
 	gtkwarrior=1;
@@ -405,8 +422,14 @@ void init_x11()
 		do {
 			gtk_list_store_append(GTK_LIST_STORE(model2), &iter);
 			pixbuf=gdk_pixbuf_new(GDK_COLORSPACE_RGB,TRUE,8,10,10);
-			color_icon(pixbuf,0,0,ptask->m_color.red,ptask->m_color.green,ptask->m_color.blue,1);
+			//color_icon(pixbuf,0,0,ptask->m_color.red,ptask->m_color.green,ptask->m_color.blue,1);
+			//m_RGBA=get_RGBA(ptask->m_color.red,ptask->m_color.green,ptask->m_color.blue);
+			//gdk_pixbuf_fill(pixbuf,m_RGBA);
 			sprintf(out_str,"#%d (%c) color(%d,%d,%d)",ptask->ID,ptask->out_symbol,ptask->m_color.red,ptask->m_color.green,ptask->m_color.blue);
+			bullet = gdk_pixmap_new (drawing_area->window, 10,10, -1);
+  			gdk_gc_set_foreground (execute_gc, &(ptask->m_color));
+  			gdk_draw_rectangle (bullet, execute_gc, TRUE, 0, 0,10,10);
+  			gdk_pixbuf_get_from_drawable(pixbuf,bullet,NULL,0,0,0,0,10,10);
   			gtk_list_store_set(GTK_LIST_STORE(model2), &iter,0, pixbuf,1,out_str,-1);
   			ptask=ptask->next;
   		}while(ptask);

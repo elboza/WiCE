@@ -177,3 +177,21 @@ void get_p_attr(int ID,char *car,int *col)
 		}
 	}
 }
+void ctout(struct process_thread *pt)
+{
+	struct process_thread *ppt;
+	for(ppt=pt->ptask->primo_thread;ppt;ppt=ppt->next)
+	{
+		ppt->communication_in_a=pt->communication_out_a;
+		ppt->communication_in_b=pt->communication_out_b;
+	}
+}
+void cpout(struct process_task *ptask)
+{
+	struct process_task *pptask;
+	for(pptask=primo_task;pptask;pptask=pptask->next)
+	{
+		pptask->communication_in_a=ptask->communication_out_a;
+		pptask->communication_in_b=ptask->communication_out_b;
+	}
+}
