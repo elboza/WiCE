@@ -13,7 +13,7 @@
 //#include"scheduler.h"
 #include"execute.h"
 #include"debug_output.h"
-
+#include"x11_output.h"
 
 void get_I_field(struct unpacked_op_mem *IR,int addr_mode,int val, int IP,int ID,int *RRPA)
 {
@@ -512,6 +512,7 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 		{
 			new_thread=(struct process_thread*)malloc(sizeof(struct process_thread));
 			if(new_thread==NULL) die("error creating the new thread");
+			ptask->n_threads++;
 			new_thread->ptask=ptask;
 			new_thread->prev=NULL;
 			new_thread->next=NULL;
@@ -522,6 +523,8 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 			new_thread->IP=RPA;
 			// and resume to next instruction
 			pt->IP=(pt->IP+1)%size_arena;
+			// update gtk_view
+			if(vo_mode==VO_X11) gtk_update_warrior(ptask);
 			//set new process to go last in process task's queue (repeat the father first)
 			add_thread_rev(new_thread,ptask);
 			ptask->cur_thread=ptask->cur_thread->prev;

@@ -13,7 +13,7 @@ init_game.o : main.h parse.h parse2.h init_game.h init_game.c
 	gcc -c init_game.c -ggdb `pkg-config gtk+-2.0 --cflags`
 scheduler.o : main.h parse.h parse2.h init_game.h scheduler.h scheduler.c
 	gcc -c scheduler.c -ggdb `pkg-config gtk+-2.0 --cflags`
-execute.o : main.h pack.h execute.h execute.c
+execute.o : main.h pack.h execute.h execute.c x11_output.h
 	gcc -c execute.c -ggdb `pkg-config gtk+-2.0 --cflags`
 debug_output.o : main.h debug_output.h debug_output.c txt_output.h x11_output.h
 	gcc -c debug_output.c -ggdb `pkg-config gtk+-2.0 --cflags`

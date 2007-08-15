@@ -136,6 +136,40 @@ void gtk_display_curr_instr(char *ss)
   		//gtk_signal_emit_by_name(GTK_OBJECT(scrolledwindow2),"scroll_event",NULL);
   	}
 }
+gint gtk_statistic(gpointer data)
+{
+	
+	return TRUE;
+}
+void gtk_update_warrior(struct process_task *ptask)
+{
+	int x,n;
+	char s1[MAXSTR];
+	n=ptask->ID - 1;
+	x=gtk_tree_model_iter_nth_child(GTK_TREE_MODEL(model2),&iter,NULL,n);
+	if(x)
+	{
+		//gtk_list_store_set(GTK_LIST_STORE(model2), &iter,0, pixbuf,1,"ciao",2,out_str,-1);
+		//gtk_list_store_set(GTK_LIST_STORE(model2), &iter,0, NULL,1,"pippo",2,"asas",-1);
+		pixbuf=gdk_pixbuf_new(GDK_COLORSPACE_RGB,TRUE,8,10,10);
+		sprintf(out_str,"#%d (%c) color(%d,%d,%d)",ptask->ID,ptask->out_symbol,ptask->m_color.red,ptask->m_color.green,ptask->m_color.blue);
+		bullet = gdk_pixmap_new (drawing_area->window, 10,10, -1);
+		gdk_gc_set_foreground (execute_gc, &(ptask->m_color));
+		gdk_draw_rectangle (bullet, execute_gc, TRUE, 0, 0,10,10);
+		gdk_pixbuf_get_from_drawable(pixbuf,bullet,NULL,0,0,0,0,10,10);
+		if(ptask->n_threads)
+		{
+			sprintf(s1,"%d",ptask->n_threads);
+		}
+		else
+		{
+			sprintf(s1,"Dead!");
+		}
+		gtk_list_store_set(GTK_LIST_STORE(model2), &iter,0, pixbuf,1,s1,2,out_str,-1);
+		g_object_unref(bullet);
+		g_object_unref(pixbuf);
+	}
+}
 static gint main_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   int x1,y1,x2,y2;
@@ -243,6 +277,7 @@ gint gtk_execute(gpointer data)
   		{
   			
   		}
+  		gtk_update_warrior(task_to_kill);
 		del_task(task_to_kill);
 	}
 	return TRUE;
@@ -306,13 +341,15 @@ void multi_win_init()
   	gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow3), 10);
   	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow3),GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   	gtk_widget_show (scrolledwindow3);
-  	model2     = gtk_list_store_new(2, GDK_TYPE_PIXBUF,G_TYPE_STRING);
+  	model2     = gtk_list_store_new(3, GDK_TYPE_PIXBUF,G_TYPE_STRING,G_TYPE_STRING);
   	view2      = gtk_tree_view_new_with_model (GTK_TREE_MODEL(model2));
   	selection2 = gtk_tree_view_get_selection(GTK_TREE_VIEW(view2));
 	renderer = gtk_cell_renderer_pixbuf_new();
   	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view2),-1,"<>",renderer,"pixbuf",0,NULL);
   	renderer = gtk_cell_renderer_text_new();
-  	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view2),-1,"Warriors",renderer,"text",1,NULL);
+  	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view2),-1,"Threads",renderer,"text",1,NULL);
+  	renderer = gtk_cell_renderer_text_new();
+  	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view2),-1,"Warriors",renderer,"text",2,NULL);
   	gtk_widget_show (view2);
   	g_object_unref(model2);
   	gtk_container_add(GTK_CONTAINER(scrolledwindow3),view2);
@@ -352,11 +389,13 @@ void one_win_init()
   	gtk_container_set_border_width (GTK_CONTAINER (scrolledwindow3), 10);
   	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow3),GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   	gtk_widget_show (scrolledwindow3);
-  	model2     = gtk_list_store_new(2, GDK_TYPE_PIXBUF,G_TYPE_STRING);
+  	model2     = gtk_list_store_new(3, GDK_TYPE_PIXBUF,G_TYPE_STRING,G_TYPE_STRING);
   	view2      = gtk_tree_view_new_with_model (GTK_TREE_MODEL(model2));
   	selection2 = gtk_tree_view_get_selection(GTK_TREE_VIEW(view2));
 	renderer = gtk_cell_renderer_pixbuf_new();
   	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view2),-1,"<>",renderer,"pixbuf",0,NULL);
+  	renderer = gtk_cell_renderer_text_new();
+  	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view2),-1,"Threads",renderer,"text",1,NULL);
   	renderer = gtk_cell_renderer_text_new();
   	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view2),-1,"Warriors",renderer,"text",1,NULL);
   	gtk_widget_show (view2);
@@ -430,13 +469,15 @@ void init_x11()
   			gdk_gc_set_foreground (execute_gc, &(ptask->m_color));
   			gdk_draw_rectangle (bullet, execute_gc, TRUE, 0, 0,10,10);
   			gdk_pixbuf_get_from_drawable(pixbuf,bullet,NULL,0,0,0,0,10,10);
-  			gtk_list_store_set(GTK_LIST_STORE(model2), &iter,0, pixbuf,1,out_str,-1);
+  			gtk_list_store_set(GTK_LIST_STORE(model2), &iter,0, pixbuf,1,"1",2,out_str,-1);
   			g_object_unref(bullet);
+  			g_object_unref(pixbuf);
   			ptask=ptask->next;
   		}while(ptask);
   	}
   	// set gtk_timeout_add
   	timeout_tag=gtk_timeout_add(gtkwaittime,gtk_execute,NULL);
+  	//timeout_tag=gtk_timeout_add(STAT_WAIT_TIME,gtk_statistic,NULL);
   	context_id = gtk_statusbar_get_context_id(GTK_STATUSBAR (statusbar),"my_statusbar");
 	gtk_statusbar_push (GTK_STATUSBAR (statusbar), context_id, "Running....");
 	gtktask=get_first();

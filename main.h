@@ -13,6 +13,7 @@
 #define COMM_THREAD 2
 
 #define MAX_CPU_CICLE 10000
+#define STAT_WAIT_TIME 1000
 
 #define MEM_TYPE_ONE 1
 #define MEM_TYPE_TWO 2
