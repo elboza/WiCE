@@ -14,14 +14,15 @@ void usage()
 	printf("wice [options] file1 file2 file3 ...\n");
 	printf("\nvalid options:\n\n");
 	printf("\t--file(-f) file\t\talternative log file\n");
-	printf("\t--output(-o) output\t\toutput mode (quiet,normal,debug,debug2,debug3)\n");
+	printf("\t--output(-o) output\toutput mode (quiet,normal,debug,debug2,debug3)\n");
 	printf("\t--size(-m) size\t\tsize of the array\n");
 	printf("\t--comm(-c) comm\t\tcommunication type(null,process,thread)\n");
 	printf("\t--vo(-v) mode\t\tmodes are (none,txt,x11)\n");
 	printf("\t--log(-l)\t\turn log on (off default)\n");
 	printf("\t--sleeptime(-z)\t\tpause between step commands (in seconds)\n");
-	printf("\t--gtkwaittime(-w)\t\tpause between step commands (in milliseconds)\n");
+	printf("\t--gtkwaittime(-w)\tpause between step commands (in milliseconds)\n");
 	printf("\t--multiwin(-e)\t\ttoggle multi or single window(s) (default is multi windows)\n");
+	printf("\t--cpu=cicles(-c)\tset the cpu cicles. -1 means infinite untill there is a winner.\n");
 	exit(1);
 }
 void get_defaults_arg()

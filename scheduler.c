@@ -36,12 +36,14 @@ int step(struct process_thread *pt)
 void play_game()
 {
 	struct process_task *ptask,*task_to_kill;
-	int actual_CPU,alive;
+	int actual_CPU,alive,infinite_CPU=0;
 	ptask=get_first();
 	//init_graph()
 	actual_CPU=0;
+	if(CPU_cicle==-1) {CPU_cicle=1;infinite_CPU=1;}
 	while(actual_CPU++<CPU_cicle)
 	{
+		if(infinite_CPU) actual_CPU--;
 		//control if there is a winner
 		if(primo_task==ultimo_task) break;
 		if(sleeptime) sleep(sleeptime);
