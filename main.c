@@ -14,7 +14,7 @@ void usage()
 	printf("wice [options] file1 file2 file3 ...\n");
 	printf("\nvalid options:\n\n");
 	printf("\t--file(-f) file\t\talternative log file\n");
-	printf("\t--output(-o) output\t\toutput mode (quiet,normal,debug,debug2)\n");
+	printf("\t--output(-o) output\t\toutput mode (quiet,normal,debug,debug2,debug3)\n");
 	printf("\t--size(-m) size\t\tsize of the array\n");
 	printf("\t--comm(-c) comm\t\tcommunication type(null,process,thread)\n");
 	printf("\t--vo(-v) mode\t\tmodes are (none,txt,x11)\n");
@@ -74,6 +74,7 @@ void parse_args(int argc,char **argv)
 				if((strcmp(optarg,"normal"))==0) output_mode=OUTPUT_NORMAL;
 				if((strcmp(optarg,"debug"))==0) output_mode=OUTPUT_DEBUG;
 				if((strcmp(optarg,"debug2"))==0) output_mode=OUTPUT_DEBUG2;
+				if((strcmp(optarg,"debug3"))==0) output_mode=OUTPUT_DEBUG3;
 				break;
 			case 'm':
 				if((strcmp(optarg,"tiny"))==0) arena_mem_type=MEM_TYPE_ONE;

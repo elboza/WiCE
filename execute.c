@@ -95,7 +95,7 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 	}
 	if(output_mode==OUTPUT_DEBUG2 && (vo_mode==VO_NONE || b_log))
 	{
-		print_debug2();
+		print_debug3();
 	}
 	switch(code->opcode)
 	{
@@ -658,11 +658,11 @@ int execute (struct unpacked_op_mem *code,struct process_thread *pt)
 	default:
 		break;
 	}
-	if(output_mode>=OUTPUT_DEBUG)
-	{
-		sprintf(out_str,"=>newIP=%d\n",pt->IP);
-		if(vo_mode==VO_NONE && log_mode) fputs(out_str,fpout);
-		//if(vo_mode==VO_FRAMEBUFFER);
-	}
+//	if(output_mode>=OUTPUT_DEBUG)
+//	{
+//		sprintf(out_str,"=>newIP=%d\n",pt->IP);
+//		if(vo_mode==VO_NONE && log_mode) fputs(out_str,fpout);
+//		//if(vo_mode==VO_FRAMEBUFFER);
+//	}
 	return alive;
 }

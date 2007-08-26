@@ -2,6 +2,7 @@
 #define OUTPUT_NORMAL 2
 #define OUTPUT_DEBUG 3
 #define OUTPUT_DEBUG2 4
+#define OUTPUT_DEBUG3 5
 #define VO_NONE 1
 #define VO_FRAMEBUFFER 2
 #define VO_X11 3

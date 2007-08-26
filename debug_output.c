@@ -58,11 +58,15 @@ void print_ex_data(struct unpacked_op_mem *code,struct unpacked_op_mem *IRA,stru
 {
 	char m_op[8],m_apref[5],m_bpref[5],m_mod[5];
 	int m_aval=0,m_bval=0;
-	if(output_mode>=OUTPUT_DEBUG)
+	if(output_mode>=OUTPUT_DEBUG2)
 	{
 		get_str(code,&m_op[0],&m_apref[0],&m_bpref[0],&m_mod[0]);
 		sprintf(out_str,"code:{proc=%d| %s %s %d,%s %d |IP=%d}                                                                ",code->processID,m_op,m_apref,code->a_val,m_bpref,code->b_val,pt->IP);
-		if((vo_mode==VO_NONE) && (log_mode))	fputs(out_str,fpout);
+		if((vo_mode==VO_NONE) /*&& (log_mode)*/)
+		{
+			fputs(out_str,fpout);
+			fputs("\n",fpout);
+		}
 		if(vo_mode==VO_FRAMEBUFFER) mvaddstr(sc_y+1+yd,0,out_str);
 	}
 	if(vo_mode==VO_FRAMEBUFFER)
@@ -83,7 +87,7 @@ void cell_refresh(int addr,struct process_thread *pt)
 	if(vo_mode==VO_FRAMEBUFFER) curses_cell_refresh(addr,pt);
 	if(vo_mode==VO_X11) x11_cell_refresh(addr,pt);
 }
-void print_debug2()
+void print_debug3()
 {
 	int count,x_pos,y_pos,col;
 	char car;
