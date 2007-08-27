@@ -218,7 +218,8 @@ gint gtk_execute(gpointer data)
 {
 	struct process_task *task_to_kill;
 	int alive;
-	static int actual_CPU=0;
+	static int actual_CPU=0,infinite_CPU=0;
+	if(CPU_cicle==-1) {CPU_cicle=1;infinite_CPU=1;}
 	if(actual_CPU++>=CPU_cicle)
 	{
 		if(gtkhistory)
@@ -247,6 +248,7 @@ gint gtk_execute(gpointer data)
 		return FALSE;
 	}
 	alive=step(gtktask->cur_thread);
+	if(infinite_CPU) actual_CPU--;
 	if(alive)
 	{
 		gtktask->cur_thread=gtktask->cur_thread->next;
